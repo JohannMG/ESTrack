@@ -1,4 +1,4 @@
-/// <reference path="typings/node/node.d.ts"/>
+/// <reference path="../typings/node/node.d.ts"/>
 
 //express
 var express = require('express');
@@ -20,32 +20,27 @@ app.use(function(req, res, next){
 app.get('/', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
-	res.send('got that!');
 	console.log(req.query);
+	res.send('got that!');
 	
-});
+});//END GET '/' 
 
 app.get('/track.*', function (req, res) {
-	res.type('image/gif');
+	res.type('text/plain');
 	res.status(200);
 
-	dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/";
+	var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/";
 
 	pg.connect(dbURL, function (err, client, done) {
 		client.query('SELECT * FROM test_table', function (err, result) {
 			done();
-			  
 			if (err){ 
 				console.error(err); 
-				response.send("Error: "+ err);
+				res.send("Error: "+ err);
 			}
-			else{ response.send(result.rows); }
+			else{ res.send(result.rows); }
 		})
 	}) //END pg.connect
-
-
-	res.send('');
-	console.log(req.query);
 	
 }); //END GET '/track.*'
 
