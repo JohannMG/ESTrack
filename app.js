@@ -28,6 +28,7 @@ app.get('/', function (req, res) {
 app.get('/track.*', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
+	console.log(req.query);
 
 	var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/";
 
