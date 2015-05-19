@@ -7,7 +7,13 @@ var pg = require('pg');
 app.set('port', process.env.PORT || 3000);
 app.use(  express.static( __dirname + '/public')  );
 
+var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/";
 
+ //for later to switch tables with config vars
+var usertable = "test_users";
+if (process.env.usertests === true ) {usertable = "test_users";}
+
+var ESID_CACHE; 
 
 //Testing Middleware
 app.use(function(req, res, next){
@@ -25,25 +31,64 @@ app.get('/', function (req, res) {
 	
 });//END GET '/' 
 
-app.get('/track.*', function (req, res) {
+app.get('/testdb.*', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
 	console.log(req.query);
 
-	var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/";
-
 	pg.connect(dbURL, function (err, client, done) {
-		client.query('SELECT * FROM test_table', function (err, result) {
+		client.query('SELECT * FROM test_users', function (err, result) {
 			done();
 			if (err){ 
 				console.error(err); 
 				res.send("Error: "+ err);
 			}
 			else{ res.send(result.rows); }
-		})
-	}) //END pg.connect
+		});
+	}); //END pg.connect
 	
-}); //END GET '/track.*'
+}); //END GET '/testdb.*'
+
+
+app.get('/tk.*', function (req,res) {
+	res.type('text/plain');
+	res.status(200);
+	var data_in = req.query; 
+	
+	if ( typeof data_in.esid == 'undefined' || typeof data_in.activation == 'undefined' ){ 
+		console.log('No missing ESID or activation send in req.'); 
+		res.send(''); 
+		return;
+	}
+	
+	if (ESID[ data_in.esid ]){
+		//update existing DB record
+		pg.connect(dbURL, function (err, client, done) {
+			client.query('INSERT', function (err, result) {
+				
+			});
+		});
+		
+	}
+	else{
+		 //check if in DB
+		 
+		//create DB record. Add room if there.
+		pg.connect(dbURL, function (err, client, done) {
+			client.query('INSERT', function (err, result) {
+				done();
+				if (err) {
+					
+				}else {}
+				
+			}); 
+		});
+		
+	}
+	
+	
+	res.send('');//send nothing back
+});
 
 
 //404 Page
@@ -63,7 +108,7 @@ app.use(function (err, req, res, next) {
 
 //---END MAIN ROUTING
 
-//listen SERVER
+//start SERVER
 app.listen(app.get('port'), function () {
 	console.log('Express started on localhost:' + app.get('port')  );
 });
