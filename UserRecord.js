@@ -1,16 +1,46 @@
 var ESID_CACHE; //notes below with cleanESID_CACHE() on proper use
 var dbTable; 
-var db; 
+var dbURL; 
 
+var pg = require('pg');
 var rooms = require ('./activations.js'); 
 
 function setUp(table, db) {
 	dbTable = table; 
-	db = this.db; 
+	dbURL = this.db; 
 	
 }
 
 function updateRecord( _location, _room, _esid ){
+	
+	
+	var userExists = (typeof ESID_CACHE[ _esid ] !== 'undefined'); //is user in chache?
+	
+	//if user does not esxist in chache, check database
+	if (!userExists){
+		
+		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid='$1';"; 
+		
+		pg.connet(dbURL, function (err, client, done) {
+			client.query(selectstring, [], 
+				function (err, result) {
+					if (err){ console.log('trouble w check user in table ' ); }
+					
+					if (result){
+						result.forEach(function(element) {
+							
+						}, this);
+					}
+			});
+			done();
+		});
+	}//end check if in DB  
+	
+	
+	
+	
+	
+	
 	
 	//check ESID and Activation included
 	if ( typeof data_in.esid == 'undefined' || typeof data_in.activation == 'undefined' ){ 

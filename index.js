@@ -8,11 +8,10 @@ app.use(express.static(__dirname + '/public'));
 //PostGres
 var pg = require('pg');
 var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/test_development";
-//for later to switch tables with config vars
-var usertable  = (process.env.usertests) ?  "test_users" : "test_users" ; 
+var usertable = (process.env.usertests) ? "test_users" : "test_users";
 
 var record = require('./UserRecord.js');
-record.setUp(dbURL , usertable); 
+record.setUp(dbURL, usertable); 
 
 //Testing Middleware
 app.use(function (req, res, next) {
@@ -49,26 +48,23 @@ app.get('/tk.*', function (req, res) {
 	res.status(200);
 	
 	//To Log, must have all fields. 
-	if (typeof req.query.location  !== 'string' || 
-		typeof req.query.room  !== 'string' || 
-		typeof req.query.esid  !== 'string') 
-	{
+	if (typeof req.query.location !== 'string' ||
+		typeof req.query.room !== 'string' ||
+		typeof req.query.esid !== 'string') {
 		res.status(400);
 		res.send('must include location, room, and esid');
-		return; 
+		return;
 	} //else continue and log info
 	
 	record.updateRecord(req.query.location, req.query.room, req.query.esid);
-	console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid ); 
+	console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);
 
 	res.send('');//send nothing back
 	
 	
+	
+	
 });
-
-
-
-
 
 
 
@@ -93,6 +89,31 @@ app.get('/testdb.*', function (req, res) {
 	}); //END pg.connect
 	
 }); //END GET '/testdb.*'
+
+app.get('/readb', function (req, res) {
+	var testy = require('./testpq.js');
+	var info;
+	testy.getAll(dbURL, function (rows) {
+		console.log(rows);
+	});
+	res.type('application/json');
+	res.send(info);
+
+});
+
+app.get('/testact', function (req, res) {
+	var actoo = require('./activations.js');
+	var locCol;
+	actoo.getColumn("orlando", "landing_page", function (found, loc, col) {
+		if (found){
+			locCol = [loc, col];
+		}
+	});
+	console.log(locCol);
+	res.type('application/json');
+	res.send(locCol);
+
+});
 
 
 //404 Page

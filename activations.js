@@ -1,34 +1,61 @@
 /*
 	Get the Activation column Name for the SQL input from the native name in tracking code
-	
 	this manages the locations to each rooms to be looked up. 
 */
-
 var locationRooms = {
-	
+
 	"orlando": {
-		"landing_page" : "room1", 
-		"history_room" : "room2", 
-		"interactive"  : "room3"
+		"landing_page": "room1",
+		"history_room": "room2",
+		"interactive": "room3"
 	},
-	
+
 	"baltimore": {
-		"landing_page" : "room1"
-	} 
+		"landing_page": "room1"
+	}
 };
 
-function getActivation(sent_location, sent_room){ 
+/*---------------------------------------------------------------------------------------
+	Send the parameters from the URL and a callback funtion 
+	that uses the proper "location" and table column for the room
+	serves the function of filtering/sanitizing input
 	
-	return locationRooms[sent_location][sent_room] || null ; 
+	found is a boolean and will return TRUE if all good
+	found will be FALSE if room not found
 	
+	ex. 
+	getActivation("Orlando", "landing_page", funtion(found, location, table_column){
+			
+	});
+
+---------------------------------------------------------------------------------------*/
+function getColumn(sent_location, sent_room, _callback) {
+
+	var loc = sent_location.toLowerCase();
+	var room = sent_room.toLowerCase();
+	var found = false;
+	var location, table_column;
+
+	if (typeof locationRooms[loc] === 'undefined') {
+		location = null;
+	
+	}else{
+		location = loc; 
+		if (typeof locationRooms[loc][room] !== 'undefined') {
+			table_column = locationRooms[loc][room];
+			found = true;
+		} else {
+			table_column = null;
+		}
+	}
+
+
+	_callback(found, location, table_column);
+
 }
 
 
+exports.getColumn = getColumn; 
 
 
-
-
-
-
-exports.getActivationColumnFromName = getActivation; 
 
