@@ -75,7 +75,7 @@ app.get('/tk.*', function (req, res) {
 
 //------------------------------ROUTING FOR TESTS-----------------------------
 app.get('/testdb.*', function (req, res) {
-	res.type('text/plain');
+	res.type('application/json');
 	res.status(200);
 	console.log(req.query);
 
@@ -86,7 +86,7 @@ app.get('/testdb.*', function (req, res) {
 				console.error(err);
 				res.send("Error: " + err);
 			}
-			else { res.send(result.rows); }
+			else { res.send(result.rows[0]); }
 		});
 
 		if (err) { console.log('connect error to' + dbURL); }
