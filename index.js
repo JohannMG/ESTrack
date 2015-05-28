@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
 	console.log(req.query);
-	res.send('got that!');
+	res.send("I'm up! What's up?");
 
 });//END GET '/'  
 
