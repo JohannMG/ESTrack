@@ -80,7 +80,7 @@ app.get('/testdb.*', function (req, res) {
 	console.log(req.query);
 
 	pg.connect(dbURL, function (err, client, done) {
-		client.query('SELECT * FROM test_table', function (err, result) {
+		client.query('SELECT * FROM test_users', function (err, result) {
 			done();
 			if (err) {
 				console.error(err);
