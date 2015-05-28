@@ -5,8 +5,8 @@
 var locationRooms = {
 
 	"orlando": {
-		"landing_page": "room1",
-		"history_room": "room2",
+		"landing": "room1",
+		"history": "room2",
 		"interactive": "room3"
 	},
 
@@ -27,14 +27,24 @@ var locationRooms = {
 	getActivation("Orlando", "landing_page", funtion(found, location, table_column){
 			
 	});
+	
+	callback notes
+		found: boolean
+		location: string
+		table_columns: string
 
 ---------------------------------------------------------------------------------------*/
 function getColumn(sent_location, sent_room, _callback) {
 
-	var loc = sent_location.toLowerCase();
-	var room = sent_room.toLowerCase();
 	var found = false;
 	var location, table_column;
+	
+	try {
+		var loc = sent_location.toLowerCase();
+		var room = sent_room.toLowerCase();
+	} catch (error) {
+		
+	}
 
 	if (typeof locationRooms[loc] === 'undefined') {
 		location = null;

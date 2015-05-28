@@ -5,7 +5,7 @@ function getAll(url, callback) {
 	var data; 
 	
 	pg.connect(url, function (err, client, done) {
-		client.query('SELECT * FROM test_users', function (err, result) {
+		client.query("SELECT * FROM test_users WHERE esid='1112'", function (err, result) {
 			done(); 
 			
 			if (err){
@@ -18,12 +18,7 @@ function getAll(url, callback) {
 			}
 		}); 
 	});
-	
-	console.log("module");
-	console.log(data);
-	console.log("end module");
-	
-	//callback(data);
+
 }
 
 exports.getAll = getAll;

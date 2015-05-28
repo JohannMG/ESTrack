@@ -1,81 +1,121 @@
-var ESID_CACHE; //notes below with cleanESID_CACHE() on proper use
-var dbTable; 
-var dbURL; 
+var ESID_CACHE = {}; //notes below with cleanESID_CACHE() on proper use
+var dbTable;
+var dbURL;
+var initiated = false;
 
 var pg = require('pg');
-var rooms = require ('./activations.js'); 
+var activations = require('./activations.js');
 
-function setUp(table, db) {
-	dbTable = table; 
-	dbURL = this.db; 
-	
+function setUp(db, table) {
+	dbTable = table;
+	dbURL = this.db;
+	initiated = true;
 }
 
-function updateRecord( _location, _room, _esid ){
+
+/*---------------------------------------------------------------------------------------
+	Method accessible from the module exports
+	send: (location, room, esid)
+	location = Geographic Location e.g., orlando, baltimore
+	room = activation inside the webapp/physical attraction
+	esid = ngx cookie/ uniqie user ID from the
 	
+	this funciton uses updateExsitingUser() to the record activation. 
 	
-	var userExists = (typeof ESID_CACHE[ _esid ] !== 'undefined'); //is user in chache?
+	checks if user in chache, it means they are in DB —> sent to update fn
+	if not in cache checks in DB
+		user exists in DB —> update cache -> set to update fn
+		user does not exists -> insert into DB & add to cache —> send to update fn   
+	
+	returns nothing 
+---------------------------------------------------------------------------------------*/
+function updateRecord(_location, _room, _esid) {
+	
+	var validESID = false; 
+	if (typeof _esid === 'string') { validESID = true; }
+	
+	var userExists = (typeof ESID_CACHE[_esid] !== 'undefined'); //is user in chache?
 	
 	//if user does not esxist in chache, check database
-	if (!userExists){
-		
-		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid='$1';"; 
-		
-		pg.connet(dbURL, function (err, client, done) {
-			client.query(selectstring, [], 
+	if (!userExists && validESID) {
+		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";
+		pg.connect(dbURL, function (err, client, done) {
+			client.query(selectstring, [_esid],
 				function (err, result) {
-					if (err){ console.log('trouble w check user in table ' ); }
-					
-					if (result){
-						result.forEach(function(element) {
-							
-						}, this);
+					if (err) { console.log('trouble w check user in table '); console.error(err); }
+	
+					if (result && result.rows.length > 0) {
+						ESID_CACHE[_esid] = new Date();
+						updateExsitingUser(_location, _room, _esid);
+						userExists = true;
 					}
-			});
-			done();
+					else {  //no user, add user		
+						var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)"
+						client.query(insertString, [_esid],
+							function (err, result) {
+								if (err) { console.log('trouble w check user in table '); console.error(err); }
+								if (result) {
+									console.log("Added USER to table " + _esid);
+									updateExsitingUser(_location, _room, _esid);
+	
+									ESID_CACHE[_esid] = new Date();
+									userExists = true;
+								}
+							});
+						}
+					done();
+				});
 		});
-	}//end check if in DB  
-	
-	
-	
-	
-	
-	
-	
-	//check ESID and Activation included
-	if ( typeof data_in.esid == 'undefined' || typeof data_in.activation == 'undefined' ){ 
-		console.log('No missing ESID or activation send in req.'); 
-		res.send(''); 
-		return;
+	}
+	else if (validESID){ //user is in cache
+		updateExsitingUser(_location, _room, _esid);
 	}
 	
-	if (ESID[ data_in.esid ]){
-		//update existing DB record
-		pg.connect(dbURL, function (err, client, done) {
-			client.query("UPDATE $1 SET $2=CURRENT_TIMESTAMP WHERE esid='$3'", 
-				[usertable, roomTags.getActivation(data_in.activation), data_in.esid ] , 
-				function (err, result) {
-				
-				if (err){ console.log('error updating user with ESID' + data_in.activation); console.error(err);}
-			});
-		});
-		
+	else {
+		//invalid ESID
 	}
-	else{
-		 //check if in DB
+
+
+}//end updateRecord()
+
+
+
+function updateExsitingUser(_location, _room, _esid) {
+			
+	var validActivation, loc, column;
+	
+	 activations. getColumn(_location, _room, function getActivations(found, location, table_column) {
+		 validActivation = found; 
+		 loc = location; 
+		 column = table_column; 
+	 }); 
+	 
+	 if (validActivation){
+		 var updateString = "UPDATE " + dbTable + " SET " + column + "= CURRENT_TIMESTAMP WHERE esid=$1"; 
 		 
-		//create DB record. Add room if there.
-		pg.connect(dbURL, function (err, client, done) {
-			client.query('', function (err, result) {
-				done();
-				if (err) {
-					
-				}else {}
-				
-			}); 
-		});
-		
-	}
+		 pg.connect(dbURL, function (err, client, done) {
+			 client.query(updateString, [_esid], function (err, result)  {
+				 if (err) { console.log("trouble updating user ESID: " + _esid);  }
+				 if (result) { console.log("uspdated user ESID: " + _esid); }
+			 }) ; 
+			 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
+			 client.query(updateLocation, [loc, _esid], function (err, result) {
+				 if (result) { console.log("updated location of esid " + _esid + " to " + loc ); }
+			 });
+			 
+			 done(); 
+		 }); 
+		 
+		 
+	 }
+	 
+	 else{
+		 //location or room invalid
+	 }
+	
+	
+
+
 }
 
 
@@ -101,5 +141,7 @@ function cleanESID_CACHE(params) {
 	
 }
 
-exports.updateRecord = updateRecord; 
+exports.updateRecord = updateRecord;
 exports.setUp = setUp; 
+
+

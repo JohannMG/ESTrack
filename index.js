@@ -47,29 +47,33 @@ app.get('/tk.*', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
 	
+	console.log(res.query);
+	
 	//To Log, must have all fields. 
-	if (typeof req.query.location !== 'string' ||
-		typeof req.query.room !== 'string' ||
-		typeof req.query.esid !== 'string') {
+	if (typeof req.query.location === 'string' ||
+		typeof req.query.room === 'string' ||
+		typeof req.query.esid === 'string') 
+	{
+		record.updateRecord(req.query.location, req.query.room, req.query.esid);
+		console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);
+	}
+	
+	else  //incorrect info
+	{
 		res.status(400);
 		res.send('must include location, room, and esid');
 		return;
-	} //else continue and log info
+	}
 	
-	record.updateRecord(req.query.location, req.query.room, req.query.esid);
-	console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);
+	
 
 	res.send('');//send nothing back
-	
-	
-	
-	
 });
 
 
 
 
-
+//------------------------------ROUTING FOR TESTS-----------------------------
 app.get('/testdb.*', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
@@ -105,7 +109,7 @@ app.get('/testact', function (req, res) {
 	var actoo = require('./activations.js');
 	var locCol;
 	actoo.getColumn("orlando", "landing_page", function (found, loc, col) {
-		if (found){
+		if (found) {
 			locCol = [loc, col];
 		}
 	});
@@ -114,6 +118,22 @@ app.get('/testact', function (req, res) {
 	res.send(locCol);
 
 });
+
+app.get('/testESID', function (req, res) {
+	var recked = require('./UserRecord.js');
+	var ngx = req.query.esid;
+	var location = req.query.location; 
+	var room = req.query.room;
+
+	recked.setUp(dbURL, usertable);
+	recked.updateRecord(location, room, ngx);
+
+	res.type('application/json');
+	res.send('done');
+
+});
+
+//------------------------END ROUTING FOR TESTS-----------------------------
 
 
 //404 Page
