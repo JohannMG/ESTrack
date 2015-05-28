@@ -27,7 +27,7 @@ app.get('/', function (req, res) {
 	console.log(req.query);
 	res.send('got that!');
 
-});//END GET '/' 
+});//END GET '/'  
 
 
 

@@ -26,7 +26,7 @@ var locationRooms = {
 	ex. 
 	getActivation("Orlando", "landing_page", funtion(found, location, table_column){
 			
-	});
+	}); 
 	
 	callback notes
 		found: boolean
