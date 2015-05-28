@@ -104,7 +104,7 @@ function updateExsitingUser(_location, _room, _esid) {
 			 });
 			 
 			 done(); 
-		 }); 
+		 });  
 		 
 		 
 	 }

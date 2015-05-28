@@ -59,7 +59,7 @@ app.get('/tk.*', function (req, res) {
 	}
 	
 	else  //incorrect info
-	{
+	{ 
 		res.status(400);
 		res.send('must include location, room, and esid');
 		return;
