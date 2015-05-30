@@ -1,2 +1,1 @@
-web: node index.js 
-helper: node rundata.js
+web: node index.js
