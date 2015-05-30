@@ -100,7 +100,7 @@ function updateExsitingUser(_location, _room, _esid) {
 		 pg.connect(dbURL, function (err, client, done) {
 			 client.query(updateString, [_esid], function (err, result)  {
 				 if (err) { console.log("trouble updating user ESID: " + _esid);  }
-				 if (result) { console.log("uspdated user ESID: " + _esid); }
+				 if (result) { console.log("updated user ESID: " + _esid); }
 			 }) ; 
 			 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
 			 client.query(updateLocation, [loc, _esid], function (err, result) {
