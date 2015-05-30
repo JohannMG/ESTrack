@@ -2,6 +2,9 @@ var ESID_CACHE = {}; //notes below with cleanESID_CACHE() on proper use
 var dbTable;
 var dbURL;
 var initiated = false;
+var MAX_CACHE_TIME = 2 * 60 * 60* 1000; // 2 hours in milliseconds (h*min*sec*ms)
+var CACHE_CLEAR_INTERVAL = 30 * 60 * 1000 ; // 30 minutes (mins*sec*ms) 
+
 
 var pg = require('pg');
 var activations = require('./activations.js');
@@ -10,6 +13,7 @@ function setUp(db, table) {
 	dbTable = table;
 	dbURL = this.db;
 	initiated = true;
+	var cleanESIDs = setInterval( cleanESID_CACHE() , CACHE_CLEAR_INTERVAL );
 }
 
 
@@ -45,7 +49,7 @@ function updateRecord(_location, _room, _esid) {
 					if (err) { console.log('trouble w check user in table '); console.error(err); }
 	
 					if (result && result.rows.length > 0) {
-						ESID_CACHE[_esid] = new Date();
+						ESID_CACHE[_esid] = Date.now();
 						updateExsitingUser(_location, _room, _esid);
 						userExists = true;
 					}
@@ -58,7 +62,7 @@ function updateRecord(_location, _room, _esid) {
 									console.log("Added USER to table " + _esid);
 									updateExsitingUser(_location, _room, _esid);
 	
-									ESID_CACHE[_esid] = new Date();
+									ESID_CACHE[_esid] = Date.now();
 									userExists = true;
 								}
 							});
@@ -126,20 +130,36 @@ function updateExsitingUser(_location, _room, _esid) {
 	A user's ESID must only be added to this if and only after they are inserted into the Database
 	or were recently re-confirmed to be in the database. 
 	
+	Date/time should be stored as UTC milliseconds. use Date.now(); 
+	
 	Example structure of the the cache --> 
 	ESID_CACHE = {
-		'1111-1111-1111': 'Mon May 25 2015 23:05:17 GMT-0400 (EDT)', 
-		'1111-1111-2222': 'Mon May 25 2015 23:06:14 GMT-0400 (EDT)', 
+		'1111-1111-1111': '1433008815001', 
+		'1111-1111-2222': '1433008855280', 
 	};
 	
 	note the value in each key: value is the last appearance of the user. UPDATE THIS  
 ---------------------------------------------------------------------------------------*/
 
-function cleanESID_CACHE(params) {
-	//clean ESID older than 2 hours
-	//TODO: implement 
+function cleanESID_CACHE() {
+	//clean ESID older than  MAX_CACHE_TIME || 2 hours
 	
-}
+	var cutoff =  Date.now() - MAX_CACHE_TIME; //the oldest (in ms) an ESID can be
+	var cleaned =  0; 
+	var inCache = 0; 
+	
+	for (var key in ESID_CACHE){
+		if ( !ESID_CACHE.hasOwnProperty(key) ) { continue; }
+		
+		if (ESID_CACHE[key] < cutoff){ //if older than cutoff, remove
+			delete ESID_CACHE[key]; 
+			cleaned++;
+		} else { inCache++; }
+	}
+	
+	console.log("Cahce objects cleaned:  " + cleaned + " items in cache: " + inCache  ); 
+	
+} //cleanESID_CACHE()
 
 exports.updateRecord = updateRecord;
 exports.setUp = setUp; 
