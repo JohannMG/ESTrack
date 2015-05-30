@@ -25,7 +25,7 @@ app.get('/', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
 	console.log(req.query);
-	res.send("I'm up! What's up?");
+	res.send("I'm up! What's up? " + process.env.DATABASE_URL);
 
 });//END GET '/'  
 
