@@ -50,9 +50,9 @@ app.get('/tk.*', function (req, res) {
 	console.log(res.query);
 	
 	//To Log, must have all fields. 
-	if (typeof req.query.location === 'string' ||
-		typeof req.query.room === 'string' ||
-		typeof req.query.esid === 'string') 
+	if (typeof req.query.location !== 'undefined' ||
+		typeof req.query.room !== 'undefined' ||
+		typeof req.query.esid !== 'undefined' ) 
 	{
 		record.updateRecord(req.query.location, req.query.room, req.query.esid);
 		console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);

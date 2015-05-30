@@ -11,7 +11,7 @@ var activations = require('./activations.js');
 
 function setUp(db, table) {
 	dbTable = table;
-	dbURL = this.db;
+	dbURL = db;
 	initiated = true;
 	var cleanESIDs = setInterval( cleanESID_CACHE() , CACHE_CLEAR_INTERVAL );
 }
@@ -44,31 +44,34 @@ function updateRecord(_location, _room, _esid) {
 	if (!userExists && validESID) {
 		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";
 		pg.connect(dbURL, function (err, client, done) {
-			client.query(selectstring, [_esid],
-				function (err, result) {
-					if (err) { console.log('trouble w check user in table '); console.error(err); }
-	
-					if (result && result.rows.length > 0) {
-						ESID_CACHE[_esid] = Date.now();
-						updateExsitingUser(_location, _room, _esid);
-						userExists = true;
-					}
-					else {  //no user, add user		
-						var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)"
-						client.query(insertString, [_esid],
-							function (err, result) {
-								if (err) { console.log('trouble w check user in table '); console.error(err); }
-								if (result) {
-									console.log("Added USER to table " + _esid);
-									updateExsitingUser(_location, _room, _esid);
-	
-									ESID_CACHE[_esid] = Date.now();
-									userExists = true;
-								}
-							});
+			if (err) {console.log(err);}
+			else {
+				client.query(selectstring, [_esid],
+					function (err, result) {
+						if (err) { console.log('trouble w check user in table '); console.error(err); }
+		
+						if (result && result.rows.length > 0) {
+							ESID_CACHE[_esid] = Date.now();
+							updateExsitingUser(_location, _room, _esid);
+							userExists = true;
 						}
-					done();
-				});
+						else {  //no user, add user		
+							var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)"
+							client.query(insertString, [_esid],
+								function (err, result) {
+									if (err) { console.log('trouble w check user in table '); console.error(err); }
+									if (result) {
+										console.log("Added USER to table " + _esid);
+										updateExsitingUser(_location, _room, _esid);
+		
+										ESID_CACHE[_esid] = Date.now();
+										userExists = true;
+									}
+								});
+							}
+						done();
+					});
+			}
 		});
 	}
 	else if (validESID){ //user is in cache
@@ -102,6 +105,7 @@ function updateExsitingUser(_location, _room, _esid) {
 				 if (err) { console.log("trouble updating user ESID: " + _esid);  }
 				 if (result) { console.log("updated user ESID: " + _esid); }
 			 }) ; 
+			 
 			 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
 			 client.query(updateLocation, [loc, _esid], function (err, result) {
 				 if (result) { console.log("updated location of esid " + _esid + " to " + loc ); }
