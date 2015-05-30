@@ -65,15 +65,36 @@ app.get('/tk.*', function (req, res) {
 		return;
 	}
 	
-	
-
 	res.send('');//send nothing back
+	
+});
+
+//404 Page
+app.use(function (req, res) {
+	res.type('text/plain');
+	res.status(404);
+	res.send('404 - Not Found');
+});
+
+//500 page
+app.use(function (err, req, res, next) {
+	console.error(err.stack);
+	res.type('text/plain');
+	res.status(500);
+	res.send('500 - internal server error');
+});
+
+//---END MAIN ROUTING
+
+//start SERVER
+app.listen(app.get('port'), function () {
+	console.log('Express started on localhost:' + app.get('port'));
 });
 
 
+/*------------------------------ROUTING FOR TESTS-----------------------------
+//copy above 404 to use
 
-
-//------------------------------ROUTING FOR TESTS-----------------------------
 app.get('/testdb.*', function (req, res) {
 	res.type('application/json');
 	res.status(200);
@@ -133,27 +154,6 @@ app.get('/testESID', function (req, res) {
 
 });
 
-//------------------------END ROUTING FOR TESTS-----------------------------
+//------------------------END ROUTING FOR TESTS-----------------------------*/
 
 
-//404 Page
-app.use(function (req, res) {
-	res.type('text/plain');
-	res.status(404);
-	res.send('404 - Not Found');
-});
-
-//500 page
-app.use(function (err, req, res, next) {
-	console.error(err.stack);
-	res.type('text/plain');
-	res.status(500);
-	res.send('500 - internal server error');
-});
-
-//---END MAIN ROUTING
-
-//start SERVER
-app.listen(app.get('port'), function () {
-	console.log('Express started on localhost:' + app.get('port'));
-});
