@@ -4,6 +4,7 @@ var dbURL;
 var initiated = false;
 var MAX_CACHE_TIME = 2 * 60 * 60* 1000; // 2 hours in milliseconds (h*min*sec*ms)
 var CACHE_CLEAR_INTERVAL = 30 * 60 * 1000 ; // 30 minutes (mins*sec*ms) 
+var cleanESIDs; //interval task
 
 
 var pg = require('pg');
@@ -13,8 +14,9 @@ function setUp(db, table) {
 	dbTable = table;
 	dbURL = db;
 	initiated = true;
-	var cleanESIDs = setInterval( cleanESID_CACHE() , CACHE_CLEAR_INTERVAL );
+	cleanESIDs = setInterval( cleanESID_CACHE , CACHE_CLEAR_INTERVAL );
 }
+
 
 
 /*---------------------------------------------------------------------------------------
@@ -108,7 +110,9 @@ function updateExsitingUser(_location, _room, _esid) {
 			 
 			 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
 			 client.query(updateLocation, [loc, _esid], function (err, result) {
-				 if (result) { console.log("updated location of esid " + _esid + " to " + loc ); }
+				 if (result) { 
+//					 console.log("updated location of esid " + _esid + " to " + loc );  
+				}
 			 });
 			 
 			 done(); 
@@ -146,7 +150,7 @@ function updateExsitingUser(_location, _room, _esid) {
 ---------------------------------------------------------------------------------------*/
 
 function cleanESID_CACHE() {
-	//clean ESID older than  MAX_CACHE_TIME || 2 hours
+	//clean ESID older than  MAX_CACHE_TIME 
 	
 	var cutoff =  Date.now() - MAX_CACHE_TIME; //the oldest (in ms) an ESID can be
 	var cleaned =  0; 
@@ -165,7 +169,19 @@ function cleanESID_CACHE() {
 	
 } //cleanESID_CACHE()
 
+function printCacheCount(){
+	var esidCount = 0; 
+	for (var key in ESID_CACHE){
+		if ( !ESID_CACHE.hasOwnProperty(key) ) { continue; }
+		esidCount++; 
+	}
+	console.log('cache size count: ' + esidCount);
+}
+
+
+
 exports.updateRecord = updateRecord;
 exports.setUp = setUp; 
+exports.printCacheCount = printCacheCount; 
 
 

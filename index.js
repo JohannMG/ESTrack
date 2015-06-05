@@ -46,7 +46,7 @@ app.get('/tk.*', function (req, res) {
 	res.type('text/plain');
 	res.status(200);
 	
-	console.log(res.query);
+	//console.log(res.query);
 	
 	//To Log, must have all fields. 
 	if (typeof req.query.location !== 'undefined' ||
@@ -54,7 +54,7 @@ app.get('/tk.*', function (req, res) {
 		typeof req.query.esid !== 'undefined' ) 
 	{
 		record.updateRecord(req.query.location, req.query.room, req.query.esid);
-		console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);
+		//console.log("tag sent. location: " + req.query.location + " Room: " + req.query.room + " ESID: " + req.query.esid);
 	}
 	
 	else  //incorrect info
@@ -63,6 +63,7 @@ app.get('/tk.*', function (req, res) {
 		res.send('must include location, room, and esid');
 		return;
 	}
+	record.printCacheCount();
 	
 	res.send('');//send nothing back
 	
