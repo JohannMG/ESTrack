@@ -8,19 +8,16 @@
   },
   "author": "johannmg",
   "license": "not yours",
-
   "dependencies": {
     "express": "4.9.x",
     "pg": "^4.3.0"
-  }, 
-
+  },
   "engines": {
     "node": "0.12.2"
   },
-
   "repository": {
     "type": "git",
     "url": ""
-  }
+  },
 
 }
