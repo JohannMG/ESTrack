@@ -44,50 +44,66 @@ function updateRecord(_location, _room, _esid) {
 	
 	//if user does not esxist in chache, check database
 	if (!userExists && validESID) {
-		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";
 		pg.connect(dbURL, function (err, client, done) {
 			if (err) {console.log(err);}
 			else {
-				client.query(selectstring, [_esid],
-					function (err, result) {
-						if (err) { console.log('trouble w check user in table '); console.error(err); }
-		
-						if (result && result.rows.length > 0) {
-							ESID_CACHE[_esid] = Date.now();
-							updateExsitingUser(_location, _room, _esid);
-							userExists = true;
-						}
-						else {  //no user, add user		
-							var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)";
-							client.query(insertString, [_esid],
-								function (err, result) {
-									if (err) { console.log('trouble w check user in table '); console.error(err); }
-									if (result) {
-										console.log("Added USER to table " + _esid);
-										updateExsitingUser(_location, _room, _esid);
-		
-										ESID_CACHE[_esid] = Date.now();
-										userExists = true;
-									}
-								});
-							}
-						done();
-					});
+				//check if user in DB
+				userExists =  checkUserInTable(_esid, _location, _room, client); 
 			}
+			
+			if (!userExists){
+				userExists = insertUserToDB( _esid, _location, _room, client ); 
+			}
+			
+			done();
+			
 		});
 	}
+	
 	else if (validESID){ //user is in cache
 		updateExsitingUser(_location, _room, _esid);
 	}
+	else { /** Invalid ESID */}
 	
-	else {
-		//invalid ESID
-	}
-
-
 }//end updateRecord() 
 
 
+function checkUserInTable(_esid, _location, _room, client){
+	var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";
+	client.query(selectstring, [_esid],
+		function (err, result) {
+			if (err) { console.log('trouble w check user in table '); console.error(err); }
+	
+			if (result && result.rows.length > 0) {
+				ESID_CACHE[_esid] = Date.now();
+				updateExsitingUser(_location, _room, _esid);
+				return true;
+			}
+	});
+	return false; 
+}
+
+function insertUserToDB(_esid, _location, _room, client){
+	var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)";
+	
+	client.query(insertString, [_esid],
+		function (err, result) {
+			if (err) { 
+				console.log('trouble w check user in table '); 
+				console.error(err); 
+				return false; 
+			}
+			
+			if (result) {
+				console.log("Added USER to table " + _esid);
+				updateExsitingUser(_location, _room, _esid);
+		
+				ESID_CACHE[_esid] = Date.now();
+				return true;
+			}
+		});
+	return false; 
+}
 
 
 function updateExsitingUser(_location, _room, _esid) {
