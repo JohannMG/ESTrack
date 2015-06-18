@@ -58,7 +58,7 @@ function updateRecord(_location, _room, _esid) {
 							userExists = true;
 						}
 						else {  //no user, add user		
-							var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)"
+							var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)";
 							client.query(insertString, [_esid],
 								function (err, result) {
 									if (err) { console.log('trouble w check user in table '); console.error(err); }

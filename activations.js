@@ -38,10 +38,12 @@ function getColumn(sent_location, sent_room, _callback) {
 
 	var found = false;
 	var location, table_column;
+	var loc;
+	var room;
 	
 	try {
-		var loc = sent_location.toLowerCase();
-		var room = sent_room.toLowerCase();
+		loc = sent_location.toLowerCase();
+		room = sent_room.toLowerCase();
 	} catch (error) {
 		
 	}
