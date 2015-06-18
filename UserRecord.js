@@ -89,6 +89,7 @@ function updateRecord(_location, _room, _esid) {
 
 
 
+
 function updateExsitingUser(_location, _room, _esid) {
 			
 	var validActivation, loc, column;
@@ -100,34 +101,27 @@ function updateExsitingUser(_location, _room, _esid) {
 	 }); 
 	 
 	 if (validActivation){
-		 var updateString = "UPDATE " + dbTable + " SET " + column + "= CURRENT_TIMESTAMP WHERE esid=$1"; 
-		 
 		 pg.connect(dbURL, function (err, client, done) {
-			 client.query(updateString, [_esid], function (err, result)  {
-				 if (err) { console.log("trouble updating user ESID: " + _esid);  }
-				 if (result) { console.log("updated user ESID: " + _esid); }
-			 }) ; 
-			 
-			 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
-			 client.query(updateLocation, [loc, _esid], function (err, result) {
-				 if (result) { 
-//					 console.log("updated location of esid " + _esid + " to " + loc );  
-				}
-			 });
-			 
-			 done(); 
+			updateUserInDb(_esid, column, loc, client);
+			done(); 
 		 });  
-		 
-		 
 	 }
+	 else{}
+}
+
+function updateUserInDb(_esid, column, loc, client){
+	
+	var updateString = "UPDATE " + dbTable + " SET " + column + "= CURRENT_TIMESTAMP WHERE esid=$1"; 
+	 client.query(updateString, [_esid], function (err, result)  {
+		 if (err) { console.log("trouble updating user ESID: " + _esid);  }
+		 if (result) { console.log("updated user ESID: " + _esid); }
+	 }) ; 
 	 
-	 else{
-		 //location or room invalid
-	 }
+	 var updateLocation =  "UPDATE " + dbTable + " SET location=$1 WHERE esid=$2"; 
+	 client.query(updateLocation, [loc, _esid], function (err, result) {
+		 if (result) {}
+	 });
 	
-	
-
-
 }
 
 
