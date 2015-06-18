@@ -44,19 +44,21 @@ function updateRecord(_location, _room, _esid) {
 	
 	//if user does not esxist in chache, check database
 	if (!userExists && validESID) {
+		
 		pg.connect(dbURL, function (err, client, done) {
 			if (err) {console.log(err);}
 			else {
 				//check if user in DB
+				//blocking code
 				userExists =  checkUserInTable(_esid, _location, _room, client); 
 			}
-			
+			//---then...
 			if (!userExists){
+				//blocking code
 				userExists = insertUserToDB( _esid, _location, _room, client ); 
 			}
 			
 			done();
-			
 		});
 	}
 	
@@ -69,9 +71,10 @@ function updateRecord(_location, _room, _esid) {
 
 
 function checkUserInTable(_esid, _location, _room, client){
+	
 	var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";
 	client.query(selectstring, [_esid],
-		function (err, result) {
+		function selectUserCallback (err, result) {
 			if (err) { console.log('trouble w check user in table '); console.error(err); }
 	
 			if (result && result.rows.length > 0) {
@@ -86,22 +89,21 @@ function checkUserInTable(_esid, _location, _room, client){
 function insertUserToDB(_esid, _location, _room, client){
 	var insertString = "INSERT INTO " + dbTable + " (esid) VALUES($1)";
 	
-	client.query(insertString, [_esid],
-		function (err, result) {
-			if (err) { 
-				console.log('trouble w check user in table '); 
-				console.error(err); 
-				return false; 
-			}
-			
-			if (result) {
-				console.log("Added USER to table " + _esid);
-				updateExsitingUser(_location, _room, _esid);
+	client.query(insertString, [_esid], function InsertUserCallback (err, result) {
+		if (err) { 
+			console.log('trouble w check user in table '); 
+			console.error(err); 
+			return false; 
+		}
 		
-				ESID_CACHE[_esid] = Date.now();
-				return true;
-			}
-		});
+		if (result) {
+			console.log("Added USER to table " + _esid);
+			updateExsitingUser(_location, _room, _esid);
+	
+			ESID_CACHE[_esid] = Date.now();
+			return true;
+		}
+	});
 	return false; 
 }
 
@@ -109,20 +111,18 @@ function insertUserToDB(_esid, _location, _room, client){
 function updateExsitingUser(_location, _room, _esid) {
 			
 	var validActivation, loc, column;
-	
-	 activations. getColumn(_location, _room, function getActivations(found, location, table_column) {
-		 validActivation = found; 
-		 loc = location; 
+	activations. getColumn(_location, _room, function getActivations(found, location, table_column) {
+		 validActivation = found;
+		 loc = location;
 		 column = table_column; 
 	 }); 
 	 
 	 if (validActivation){
 		 pg.connect(dbURL, function (err, client, done) {
 			updateUserInDb(_esid, column, loc, client);
-			done(); 
-		 });  
+			done();
+		 });
 	 }
-	 else{}
 }
 
 function updateUserInDb(_esid, column, loc, client){
