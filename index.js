@@ -10,7 +10,7 @@ var pg = require('pg');
 var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/test_development";
 var usertable = (process.env.usertests) ? "test_users" : "test_users";
 
-var record = require('./UserRecord.js');
+var record = require('./lib/UserRecord.js');
 record.setUp(dbURL, usertable); 
 
 //Testing Middleware
