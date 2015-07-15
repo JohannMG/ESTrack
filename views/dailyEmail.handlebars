@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	 {{#each locations}}
+		 <h3>LOCATION: {{this.location}}</h3>
+		 {{#each room}}
+			 {{this.name}} —— {{this.hits}}
+		 {{/each}}
+		 
+		 
+	 {{/each}}
+
+</body>
+</html>
