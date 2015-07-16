@@ -44,3 +44,6 @@ function sendEmail() {
 
 
 //console.log(temp.render( 'dailyEmail', {thing: "yes"}  )); 
+
+
+
