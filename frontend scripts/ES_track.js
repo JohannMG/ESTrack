@@ -4,7 +4,7 @@
 //https://boiling-caverns-3581.herokuapp.com/tk.gif
 
 function addESTrack() {
-	var URLBASE = "//www.trackingSERVERgoesHERE.com/"; //no ? in base 
+	var URLBASE = '//boiling-caverns-3581.herokuapp.com/tk.gif'; //no ? in base 
 	
 	var trk_attribute = document.body.getAttribute('data-ngx-tracking');
 	if (trk_attribute.toLowerCase().substring(0,3) !== "EST") { return; }
