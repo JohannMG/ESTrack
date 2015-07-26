@@ -7,7 +7,7 @@ function addESTrack() {
 	var URLBASE = "//www.trackingSERVERgoesHERE.com/"; //no ? in base 
 	
 	var trk_attribute = document.body.getAttribute('data-ngx-tracking');
-	if (trk_attribute.substring(0,3) !== "EST") { return; }
+	if (trk_attribute.toLowerCase().substring(0,3) !== "EST") { return; }
 	
 	var trackVars = trk_attribute.split("_");	
 	if (trackVars.length < 3){ return;  }

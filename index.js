@@ -62,7 +62,7 @@ app.get('/tk.*', function (req, res) {
 		res.send('must include location, room, and esid');
 		return;
 	}
-	record.printCacheCount();
+	//record.printCacheCount();
 	
 	res.send('');//send nothing back
 	
@@ -90,69 +90,5 @@ app.listen(app.get('port'), function () {
 	console.log('Express started on localhost:' + app.get('port'));
 });
 
-
-/*------------------------------ROUTING FOR TESTS-----------------------------
-//copy above 404 to use
-
-app.get('/testdb.*', function (req, res) {
-	res.type('application/json');
-	res.status(200);
-	console.log(req.query);
-
-	pg.connect(dbURL, function (err, client, done) {
-		client.query('SELECT * FROM test_users', function (err, result) {
-			done();
-			if (err) {
-				console.error(err);
-				res.send("Error: " + err);
-			}
-			else { res.send(result.rows[0]); }
-		});
-
-		if (err) { console.log('connect error to' + dbURL); }
-	}); //END pg.connect
-	
-}); //END GET '/testdb.*'
-
-app.get('/readb', function (req, res) {
-	var testy = require('./testpq.js');
-	var info;
-	testy.getAll(dbURL, function (rows) {
-		console.log(rows);
-	});
-	res.type('application/json');
-	res.send(info);
-
-});
-
-app.get('/testact', function (req, res) {
-	var actoo = require('./activations.js');
-	var locCol;
-	actoo.getColumn("orlando", "landing_page", function (found, loc, col) {
-		if (found) {
-			locCol = [loc, col];
-		}
-	});
-	console.log(locCol);
-	res.type('application/json');
-	res.send(locCol);
-
-});
-
-app.get('/testESID', function (req, res) {
-	var recked = require('./UserRecord.js');
-	var ngx = req.query.esid;
-	var location = req.query.location; 
-	var room = req.query.room;
-
-	recked.setUp(dbURL, usertable);
-	recked.updateRecord(location, room, ngx);
-
-	res.type('application/json');
-	res.send('done');
-
-});
-
-//------------------------END ROUTING FOR TESTS-----------------------------*/
 
 
