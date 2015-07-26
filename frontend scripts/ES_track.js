@@ -1,6 +1,8 @@
 //GETS data from page, send imgage request to EStrack
 //put in external ref: EST_{location}_{activation}  without the curly braces e.g., EST_orlando_landing
 
+//https://boiling-caverns-3581.herokuapp.com/
+
 function addESTrack() {
 	var URLBASE = "//www.trackingSERVERgoesHERE.com/"; //no ? in base 
 	
@@ -43,6 +45,6 @@ document.addEventListener("DOMContentLoaded", addESTrack);
 
 /*minified Jun-10 copy
 
-function addESTrack(){var t="//www.trackingSERVERgoesHERE.com/",e=document.body.getAttribute("data-ngx-tracking");if("EST"===e.substring(0,3)){var n=e.split("_");if(!(n.length<3)){var o=n[1],r=n[2],i=getCookie("ngx");if(""!==i){var a=new Image;a.src=t+"?esid="+i+"&location="+o+"&room="+r,a.setAttribute("style","display:none;"),document.body.appendChild(a)}}}}function getCookie(t){for(var e=t+"=",n=document.cookie.split(";"),o=0;o<n.length;o++){for(var r=n[o];" "==r.charAt(0);)r=r.substring(1);if(0==r.indexOf(e))return r.substring(e.length,r.length)}return"";}document.addEventListener("DOMContentLoaded",addESTrack);
+function addESTrack(){var t="https://boiling-caverns-3581.herokuapp.com/",e=document.body.getAttribute("data-ngx-tracking");if("EST"===e.substring(0,3)){var n=e.split("_");if(!(n.length<3)){var o=n[1],r=n[2],i=getCookie("ngx");if(""!==i){var a=new Image;a.src=t+"?esid="+i+"&location="+o+"&room="+r,a.setAttribute("style","display:none;"),document.body.appendChild(a)}}}}function getCookie(t){for(var e=t+"=",n=document.cookie.split(";"),o=0;o<n.length;o++){for(var r=n[o];" "==r.charAt(0);)r=r.substring(1);if(0==r.indexOf(e))return r.substring(e.length,r.length)}return"";}document.addEventListener("DOMContentLoaded",addESTrack);
 
 */
