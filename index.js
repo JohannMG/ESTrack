@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'));
 //PostGres
 var pg = require('pg');
 var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/test_development";
-var usertable = (process.env.usertests) ? process.env.users_table || "test_users" : "test_users";
+var usertable = process.env.USERS_TABLE || "test_users";
 
 var record = require('./lib/UserRecord.js');
 record.setUp(dbURL, usertable); 
