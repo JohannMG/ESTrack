@@ -53,7 +53,7 @@ app.get('/tk.*', function (req, res) {
 		typeof req.query.esid !== 'undefined' ) 
 	{
 		record.updateRecord(req.query.location, req.query.room, req.query.esid);
-		console.log('tag sent.' + req.query);
+		console.log(req.query);
 		res.send('');//send nothing back
 	}
 	
