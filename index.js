@@ -63,11 +63,9 @@ app.get('/tk.*', function (req, res) {
 		res.send('must include location, room, and esid');
 		return;
 	}
-	//record.printCacheCount();
-	
-
 	
 });
+ 
 
 //404 Page
 app.use(function (req, res) {
