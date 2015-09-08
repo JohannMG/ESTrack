@@ -5,6 +5,29 @@ CSS for dashboard by @johann_mg
 
 -----------------------------------------------------------------------------*/
 
-body{
+html{
 	
+}
+
+body{
+	font-family: 'Helvetica Neue','Helvetica', Helvetica, Arial,sans-serif;
+	font-size: 16px;	
+}
+
+html { font-size: 1em; }
+
+h1 { font-size: 2.074em; }
+
+h2 { font-size: 1.728em; }
+
+h3 { font-size: 1.44em; }
+
+h4 { font-size: 1.2em; }
+
+small { font-size: 0.833em; }
+
+.box { padding: 1.25em; }
+
+@media screen and (min-width: 900px) {
+  html { font-size: 1.25em; }
 }

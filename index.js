@@ -1,8 +1,30 @@
-
 var express = require('express');
 var app = express();
+var path = require('path');
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public'));
+
+//sessions
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var expressSession = require('express-session');
+var passport = require('passport');  
+var passportLocal = require('passport-local');  
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use(expressSession(
+  { secret: 'this better be edited later',
+  saveUninitialized: false,
+	resave: false
+  }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+var passportConfig = require('./auth/passport-config'); 
+passportConfig();
 
 //PostGres
 var pg = require('pg');
@@ -12,12 +34,23 @@ var usertable = process.env.USERS_TABLE || "test_users";
 var record = require('./lib/UserRecord.js');
 record.setUp(dbURL, usertable); 
 
+var appRoutes = require('./routes/management');
+var dataRoutes = require('./routes/dataRoutes');
+
+//View engine
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
 //Testing Middleware
 app.use(function (req, res, next) {
 	res.locals.showTests = (app.get('env') !== 'production') && (req.query.test === '1');
 	next();
 });
 
+
+//APP routing
+app.use('/app', appRoutes); 
+app.use('/data', dataRoutes); 
 
 //----BEGIN ROUTING-----
 app.get('/', function (req, res) {
