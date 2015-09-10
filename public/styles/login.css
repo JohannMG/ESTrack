@@ -31,7 +31,8 @@ h3{
 }
 
 input[type=text],
-input[type=password]{
+input[type=password],
+input[type=email]{
     font-size: 1em;
     margin: .2em 0 2.4em 0;
     width: 95%;
@@ -68,4 +69,33 @@ input[type="submit"] {
 
 #help a {
     color: white;
+}
+
+.loginflash {
+    text-align: center;
+    padding: 1% 0 1% 0;
+    background-color: #6d6d6d;
+    border-bottom: 1px #FFF solid;
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    font-style: italic;
+    font-weight: 100;
+    letter-spacing: .9px;
+}
+
+
+.userNote {
+    text-align: center;
+    padding: 1% 0 1% 0;
+    background-color: #6d6d6d;
+    border-bottom: 1px #FFF solid;
+    color: #FFFFFF;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    font-style: italic;
+    font-weight: 100;
+    letter-spacing: .9px;
 }

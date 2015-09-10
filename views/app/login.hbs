@@ -1,5 +1,5 @@
 <link rel='stylesheet' href="/styles/login.css" type='text/css' media='all' />
-
+{{#if newUsername}}<div class="loginflash">User {{newUsername}} was created!</div>{{/if}}
 <div class="loginbox">
 	<h3>Ripley's ES Track</h3>
 	<form name="login-panel" id="login-panel" method="post" action="/app/login">

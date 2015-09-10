@@ -7,26 +7,27 @@ module.exports = function () {
 
 	passport.use(new LocalStrategy(
 		function (username, password, done) {
-			userService.findUser({ username: username }, function (err, user) {
-				
-				//if good request --> "return done(null, user);"
-				//if bad request --> "return done(null, false, {message: "say what's up here"});"
-				//if error --> "return done(err);" 
-				
-				
+			userService.findUser(username,function (err, user) {
 				if (err) { return done(err); }
 				
 				if (!user) {
 					return done(null, false, { message: 'credentials incorrect' });
 				}
 				
-				//this MUST use bCrypt hashes later
-				if (user.password === password) {
-					return done(null, user); 
-				}
-				
-				return done(null, false, { message: 'credentials incorrect' });
-
+				console.log(user);
+				bcrypt.compare(password, user.pass, function(err, same) {
+					if (err) {
+						return done(err);
+					}
+					//incorrect pass
+					if (!same) {
+						 done(null, null);
+						 return;
+					}
+					
+					//correct pass
+					done(null, user);  
+				}); 
 			});
 		})
 	); //end passport.use for local strategy

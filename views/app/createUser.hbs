@@ -1,0 +1,33 @@
+<link rel='stylesheet' href="/styles/login.css" type='text/css' media='all' />
+
+{{#if userNote}}<div class="userNote">{{userNote}}</div>{{/if}}
+<div class="loginbox">
+	<h3>Ripley's ES Track</h3>
+	<form name="create-user" id="login-panel" method="post" action="/app/create">
+		<label for="username">new username*</label>
+		<input type="text" id="username" name="username" required/>
+		
+		<label for="password">password*</label>
+		<input type="password" id="password" name="password" required/>
+		
+		<label for="email">email</label>
+		<input type="email" id="email" name="email"/>
+		
+		<label for="firstname">first name</label>
+		<input type="text" id="firstname" name="firstname"/>
+		
+		<label for="lastname">first name</label>
+		<input type="text" id="lastname" name="lastname"/>
+		
+		
+		<div class="submitbtn">
+			<input type="submit" value="login"/>
+		</div>
+	 
+	</form>
+</div>
+
+<div id="help"> need help? contact <a href="http://www.twitter.com/johann_mg" target="_blank">johannmg</a></div>
+
+
+
