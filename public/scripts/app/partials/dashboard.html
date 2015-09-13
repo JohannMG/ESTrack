@@ -1,4 +1,47 @@
 <div mgmt-Nav-Menu></div>
 
-<h3>this is the dashboard</h3>
-<p>Hello {{name}}</p>
+<div class="content">
+<div class="fullwidth">
+	
+	<section class="quick-look">
+		<ul class="quick-look-tiles">
+			<li class="quick-look-tile">
+				<h3>Total Unique Users</h3>
+				<p>{{ wideMetrics.totalUsers | number }}</p>
+			</li>
+			<li class="quick-look-tile">
+				<h3>Guests in Past 7 Days</h3>
+				<p>{{ wideMetrics.users7Days | number }}</p>
+			</li>
+			<li class="quick-look-tile">
+				<h3>Guests Today</h3>
+				<p>{{ wideMetrics.usersToday | number }}</p>
+			</li>
+		</ul>
+	</section>
+	
+	<hr/>
+	<section class="locations-stats">
+		
+		<div class="location" ng-repeat="location in locations">
+			<h2>{{location.name}}</h2>
+			<div class="data-snippets">
+				
+				<ul class="col-half">
+					<li><span class="data">{{location.roomCount}}</span> Rooms</li>
+					<li><span class="data">{{location.userRecords}}</span> User Records</li>
+					<li><span class="data">{{location.lastUser | date:'EEEE h:mm:ss a' }}</span> Last New Guest</li>
+				</ul>
+				<ul class="col-half last-col">
+					<li><span class="data">{{location.visitsToday}}</span> Guests Today</li>
+					<li><span class="data">{{location.visitsYesterday}}</span> Guests Yesterday</li>
+					<li><span class="data">{{location.visits7Days}}</span> Guests 7Days</li>
+				</ul>
+			</div>
+			
+		</div>
+		
+	</section>
+	
+</div><!-- .fullwidth -->
+</div><!-- .content -->
