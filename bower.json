@@ -1,0 +1,16 @@
+{
+  "name": "trackES",
+  "main": "index.js",
+  "version": "1.0.1",
+  "authors": [
+    "JohannMG <hello@johannmg.com>"
+  ],
+  "description": "tracking solution for Engage Sciences Activations",
+  "license": "MIT",
+  "homepage": "www.johannmg.com",
+  "dependencies": {
+    "angular": "~1.4.5",
+    "angular-route": "~1.4.5",
+    "underscore": "~1.8.3"
+  }
+}

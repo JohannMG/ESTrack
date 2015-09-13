@@ -9,10 +9,19 @@
   "author": "johannmg",
   "license": "not yours",
   "dependencies": {
+    "bcrypt": "^0.8.5",
+    "body-parser": "^1.13.3",
+    "cookie-parser": "^1.3.5",
     "express": "4.9.x",
+    "express-session": "^1.11.3",
     "handlebars": "^3.0.3",
+    "hbs": "^3.1.0",
     "moment": "^2.10.3",
-    "pg": "^4.3.0"
+    "node-handlebars": "^0.9.7",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "pg": "^4.3.0",
+    "validator": "^4.0.5"
   },
   "engines": {
     "node": "0.12.2"

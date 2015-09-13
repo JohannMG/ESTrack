@@ -1,0 +1,14 @@
+<section id="menu-container" ng-controller="navCtrl">
+	<h3>ESTRACK</h3>
+		<nav class="menu">
+			<ul class="navigation">
+				<li class="{{ activeLink('/') }}" ><a href="#!/">Dashboard</a></li>
+				<li class="{{ activeLink('/reports') }}"><a href="#!/reports">Reports</a></li>
+				<li class="{{ activeLink('/manage') }}"><a href="#!/manage">Management</a></li>
+				<li class="{{ activeLink('/users') }}"><a href="#!/users">Users</a></li>
+			</ul>
+			
+		</nav>
+		
+		<div class="logout"><a href="/app/logout/">Logout</a></div>
+</section>
