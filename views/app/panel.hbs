@@ -1,25 +1,13 @@
 <h3> this is the entire app so far </h3>
 
-<div class="container">
-	<section id="menu-container">
-		<nav class="menu">
-			
-			<ul class="navigation">
-				<li><a href="#!">Dashboard</a></li>
-				<li><a href="#!">Reports</a></li>
-				<li><a href="#!">Configuration</a></li>
-				<li><a href="#!">Users</a></li>
-			</ul>
-			
-		</nav>
-		
-		<div class="logout"><a href="/app/logout/">Logout</a></div>
-	</section>
+<div ng-app="mgmtApp">
+	<div ng-view></div>
 	
-	<main id="app-area">
-		<div
-		
-	</main> <!-- #app-area-->
-	
-	
-</div>
+</div> <!--ng-app=mgmtApp-->
+
+<!--Scripts-->
+<script src="/bower/angular/angular.min.js"></script>
+<script src="/bower/angular-route/angular-route.min.js"></script>
+<script src="/scripts/app/app.js"></script>
+<script src="/scripts/app/directives.js"></script>
+<script src="/scripts/app/controllers.js"></script>

@@ -10,7 +10,7 @@ var userService = require('../services/users-service');
 
 
 //MAIN APP PAGE. LOAD NG
-router.get('/', restrict, function (req, res, next){
+router.get('/', function (req, res, next){
 	var vm = {};
 	res.render('app/panel', vm);
 }); 
@@ -38,7 +38,7 @@ router.get('/logout',  function(req, res, next){
 }); 
 
 
-router.get('/create', restrict, function(req, res, next){
+router.get('/create',restrict,  function(req, res, next){
 	var vm = {
 		title: 'Create New User'
 	};
