@@ -6,7 +6,7 @@ CSS for dashboard by @johann_mg
 -----------------------------------------------------------------------------*/
 
 html{
-	
+	font-size: 1em;
 }
 
 body{
@@ -14,7 +14,9 @@ body{
 	font-size: 16px;	
 }
 
-html { font-size: 1em; }
+h1, h2, h3, h4, h5 {
+	margin-top: 0; 
+}
 
 h1 { font-size: 2.074em; }
 
@@ -30,4 +32,28 @@ small { font-size: 0.833em; }
 
 @media screen and (min-width: 900px) {
   html { font-size: 1.25em; }
+}
+
+a {
+	text-decoration: none;
+	color: inherit; 
+}
+
+ul {
+    list-style: none;
+    padding: 0 0 0 0.6em;
+    line-height: 2em;
+}
+
+#menu-container{
+	width: 25%;
+    background-color: #CCC;
+    height: 100vh;
+    float: left;
+}
+
+.logout {
+    position: fixed;
+    bottom: 0;
+    padding: .2em;
 }
