@@ -44,7 +44,7 @@ router.get('/highlights', function(req, res, next){
 		if (err){
 			console.log('ERROR with data service: ');
 			console.log(err);
-			res.send(err);
+			res.send({error: err});
 		}
 		else{
 			res.send(result);

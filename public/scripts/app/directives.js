@@ -1,6 +1,6 @@
-'use strict'; 
-
-(function() { //namespace scope
+ (function() { //namespace scope
+ 
+ 'use strict';
 
 	var mgmtDirectives = angular.module('mgmtDirectives', []);
 	

@@ -2,7 +2,9 @@
 
 var mgmtApp = angular.module('mgmtApp', [
 	'ngRoute',
-	'mgmtDirectives'
+	'ngResource',
+	'mgmtDirectives',
+	'mgmtServices'
 ]);
 
 mgmtApp.config(['$routeProvider', '$locationProvider', 

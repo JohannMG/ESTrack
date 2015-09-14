@@ -3,14 +3,24 @@
 	
 	/*  DashboardCtrl ------------------ */
 	angular.module('mgmtApp').controller('DashboardCtrl', DashboardCtrl);
-	DashboardCtrl.$inject = ['$scope','$location'];
-	function DashboardCtrl($scope, $location){
+	DashboardCtrl.$inject = ['$scope','$location', 'WideMetrics' ];
+	function DashboardCtrl($scope, $location, WideMetrics ){
 		
 		$scope.wideMetrics = {
-			totalUsers: 12902,
-			users7Days: 102, 
-			usersToday: 66
+			totalUsers: 'loading...',
+			users7Days: 'loading...',
+			usersToday: 'loading...'
 		};
+		
+		WideMetrics.get({}, 
+			function success(response){
+				$scope.wideMetrics = response; 
+			},
+			function error(errorResponse){
+				$scope.wideMetrics = errorResponse; 
+				console.log( errorResponse );
+			}
+		); 
 		
 		$scope.locations = [
 			{
@@ -33,7 +43,7 @@
 				visits7Days: 5400, 
 				
 			}
-		]
+		];
 	}//end DashboardCtrl
 
 
@@ -61,8 +71,8 @@
 		$scope.activeLink = function(linkPath){
 			var currentPath = $location.path();
 			return (currentPath === linkPath) ? "activePage" : "";
-		}
+		};
 		
-	}; //end navCtrl
+	} //end navCtrl
 	
 }());
