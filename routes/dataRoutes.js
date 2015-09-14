@@ -6,9 +6,8 @@ var express = require('express');
 var router = express.Router(); 
 var passport = require('passport');
 
-var pg = require('pg');
-var dbURL = process.env.DATABASE_URL || "postgres://localhost:5432/test_development";
-var usertable = process.env.USERS_TABLE || "test_users";
+var dataService = require('../services/data-services'); 
+
 
 
 //  server.com/data/
@@ -16,5 +15,45 @@ router.get('/', function(req, res, next){
 	res.type('html');
 	res.send('<h4>Documendation coming </h4><br><p><a href="http://www.twitter.com/johann_mg">bug Johann to make them</a><p>');  
 }); 
+
+/** 
+	locations = [{
+		name: "location Name";
+		roomCount:
+		userRecords: 
+		lastUser:
+		visitsToday: 
+		visitsYesterday: 
+		visits7Days:  
+	},{}]
+*/
+
+
+router.get('/locationStats', function(req, res, next){
+	
+	
+});
+
+/*{
+		totalUsers: number,
+		users7Days: number, 
+		usersToday: number    };
+*/
+router.get('/highlights', function(req, res, next){
+	dataService.highlights(function(err, result){
+		if (err){
+			console.log('ERROR with data service: ');
+			console.log(err);
+			res.send(err);
+		}
+		else{
+			res.send(result);
+		}
+		
+	});
+	
+}); 
+
+
 
 module.exports = router;

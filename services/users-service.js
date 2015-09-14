@@ -28,6 +28,7 @@ exports.findUser = function (username, _callback) {
 		if (err){
 			console.log('Error with get user DB connection ');
 			_callback(err, null);
+			client.end();
 			return;
 		}
 		
@@ -35,6 +36,7 @@ exports.findUser = function (username, _callback) {
 			if (err){
 				console.log('Error with get user DB query ');
 				_callback(err, null);
+				client.end();
 				return;
 			}
 			
@@ -42,7 +44,9 @@ exports.findUser = function (username, _callback) {
 				if (result.rows.length > 1){ console.log('more than one user found? returning first'); }
 				
 				_callback(null, result.rows[0]);
+				client.end();
 				return;
+				
 				
 			}
 			
