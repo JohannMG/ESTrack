@@ -52,11 +52,11 @@ function getData(location){
 	});
 	
 	//1: Count all rows of users incoming. If <0 terminate report, send simple email
-	var countString = "SELECT (esid) FROM "+ dbTable +" WHERE firstping >= '" + beginOfYesterday+ "' AND firstping <= '"+ endOfYesterday +"' AND location = '" + location + "' ORDER BY firstping ASC;"
+	// var countString = "SELECT (esid) FROM "+ dbTable +" WHERE firstping >= '" + beginOfYesterday+ "' AND firstping <= '"+ endOfYesterday +"' AND location = '" + location + "' ORDER BY firstping ASC;"
 	
-	function getTotal Users(params) {
-		var t = 5; 
-	}
+	// function getTotal Users(params) {
+	// 	var t = 5; 
+	// }
 	
 	function checkUserInTable(_esid, _location, _room, client){
 		var selectstring = "SELECT * FROM " + dbTable + " WHERE esid=$1";

@@ -7,7 +7,7 @@ function locationStats() {
 
 
 
-};
+}
 
 
 /*		
@@ -74,7 +74,7 @@ function highlights(_callback) {
 		}); //END: client.query(sevenDaysQuery
 	}); // END: client.query(rowCountQuery
 	
-};//highlights()
+}//highlights()
 
 
 exports.locationStats = locationStats;
