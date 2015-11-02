@@ -18,7 +18,7 @@ function($routeProvider, $locationProvider){
 			templateUrl: '../scripts/app/partials/reports.html',
 			controller: 'ReportsCtrl'
 		}).
-		// when('manage',{
+		// when('/manage',{
 		// 	templateUrl: 'partials/manage.html',
 		// 	controller: 'ManagementCtrl'
 		// }).
